@@ -1,0 +1,136 @@
+/* Манасчылар сквери — цвета с рендеров проекта: бронза фигур, белый мрамор
+   постамента, закатное небо, красная брусчатка, тёмная зелень кипарисов. */
+:root {
+  --bronze: #7a4f2a;
+  --bronze-deep: #4a2f18;
+  --gold: #c8964f;
+  --marble: #f6f2ea;
+  --marble-line: #e2d9c8;
+  --brick: #b4553f;
+  --cypress: #2f4632;
+  --ink: #2a211a;
+  --muted: #74675a;
+  --sky-1: #f3b46a;
+  --sky-2: #e9876a;
+  --sky-3: #6f6a8f;
+  --paper: #fbf8f3;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 17px/1.65 "Noto Sans", system-ui, sans-serif;
+}
+img { display: block; max-width: 100%; }
+a { color: var(--bronze); }
+
+/* Язык: текст на обоих языках лежит в разметке, видим один */
+html[data-lang="ky"] [lang="ru"], html[data-lang="ru"] [lang="ky"] { display: none !important; }
+
+/* ── Шапка с рендером ───────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: min(78vh, 720px);
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--sky-3), var(--sky-2) 55%, var(--sky-1));
+}
+.hero img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 30%;
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(20,12,6,0) 35%, rgba(20,12,6,.78) 100%);
+}
+.hero-inner {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 760px; margin: 0 auto;
+  padding: 0 20px 40px;
+}
+.kicker {
+  font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
+  color: #f4d9ae;
+}
+.hero h1 {
+  margin: 6px 0 4px;
+  font: 700 clamp(34px, 8vw, 58px)/1.08 "Noto Serif", Georgia, serif;
+  text-shadow: 0 2px 18px rgba(0,0,0,.35);
+}
+.years { font: 500 20px/1.3 "Noto Serif", Georgia, serif; color: #f6e6cc; }
+
+/* ── Переключатель языка ────────────────────────────────────────────────── */
+.lang {
+  position: fixed; top: 14px; right: 14px; z-index: 10;
+  display: flex; border-radius: 999px; overflow: hidden;
+  background: rgba(255,255,255,.88); box-shadow: 0 2px 10px rgba(0,0,0,.18);
+}
+.lang button {
+  border: 0; background: none; padding: 8px 14px; cursor: pointer;
+  font: 600 14px "Noto Sans", sans-serif; color: var(--bronze-deep);
+}
+.lang button[aria-pressed="true"] { background: var(--bronze); color: #fff; }
+
+/* ── Текст ──────────────────────────────────────────────────────────────── */
+main { max-width: 760px; margin: 0 auto; padding: 8px 20px 40px; }
+.facts {
+  margin: -28px 0 28px; position: relative; z-index: 2;
+  background: var(--marble); border: 1px solid var(--marble-line);
+  border-radius: 14px; padding: 18px 20px;
+  box-shadow: 0 10px 30px rgba(74,47,24,.12);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 20px;
+}
+.fact .k { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.fact .v { font: 600 17px/1.35 "Noto Serif", Georgia, serif; color: var(--bronze-deep); }
+h2 {
+  margin: 36px 0 10px;
+  font: 700 26px/1.25 "Noto Serif", Georgia, serif; color: var(--bronze-deep);
+}
+h2::after {
+  content: ""; display: block; width: 48px; height: 3px; margin-top: 10px;
+  background: var(--brick); border-radius: 2px;
+}
+p { margin: 0 0 14px; }
+blockquote {
+  margin: 26px 0; padding: 18px 22px;
+  background: linear-gradient(135deg, #fff7ea, #f7ead6);
+  border-left: 4px solid var(--gold); border-radius: 0 12px 12px 0;
+  font: italic 500 21px/1.45 "Noto Serif", Georgia, serif; color: var(--bronze-deep);
+}
+blockquote cite { display: block; margin-top: 8px; font: normal 14px "Noto Sans", sans-serif; color: var(--muted); }
+.timeline { list-style: none; margin: 0; padding: 0 0 0 18px; border-left: 2px solid var(--marble-line); }
+.timeline li { position: relative; margin: 0 0 14px; padding-left: 14px; }
+.timeline li::before {
+  content: ""; position: absolute; left: -25px; top: 8px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--gold); box-shadow: 0 0 0 3px var(--paper);
+}
+.timeline b { color: var(--bronze); font-family: "Noto Serif", Georgia, serif; }
+
+/* ── Другие манасчы ─────────────────────────────────────────────────────── */
+.others { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 14px; }
+.card {
+  display: block; text-decoration: none; color: inherit;
+  background: #fff; border: 1px solid var(--marble-line); border-radius: 14px; overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(74,47,24,.14); }
+.card img { aspect-ratio: 16 / 10; object-fit: cover; width: 100%; }
+.card div { padding: 12px 14px 14px; }
+.card b { display: block; font: 700 18px/1.25 "Noto Serif", Georgia, serif; color: var(--bronze-deep); }
+.card span { font-size: 14px; color: var(--muted); }
+
+/* ── Подвал ─────────────────────────────────────────────────────────────── */
+footer {
+  background: var(--cypress); color: #dfe7da;
+  padding: 26px 20px 30px; text-align: center; font-size: 14px;
+}
+footer b { color: #fff; font: 600 16px "Noto Serif", Georgia, serif; }
+footer .brick { height: 6px; background: repeating-linear-gradient(90deg, var(--brick) 0 38px, #9c4433 38px 40px); margin: -26px -20px 22px; }
+.src { font-size: 13px; color: var(--muted); margin-top: 30px; }
+.src a { color: var(--muted); }
