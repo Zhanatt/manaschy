@@ -21,3 +21,15 @@
   });
   document.addEventListener('DOMContentLoaded', function () { set(root.getAttribute('data-lang')); });
 })();
+
+// Видео: до нажатия — только обложка, плеер YouTube грузится по клику
+document.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('.yt');
+  if (!b) return;
+  var f = document.createElement('iframe');
+  f.src = 'https://www.youtube-nocookie.com/embed/' + b.dataset.id + '?autoplay=1&rel=0';
+  f.title = b.getAttribute('aria-label') || 'Видео';
+  f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+  f.allowFullscreen = true;
+  b.replaceWith(f);
+});

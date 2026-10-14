@@ -9,6 +9,7 @@ from pathlib import Path
 from html import escape
 
 ROOT = Path(__file__).parent
+PD = {"ky": "Wikimedia Commons · коомдук менчик", "ru": "Wikimedia Commons · общественное достояние"}
 
 MANAS = [
     {
@@ -68,6 +69,21 @@ MANAS = [
             ("1971", {"ky": "Фрунзеде дүйнөдөн кайткан", "ru": "Скончался во Фрунзе"}),
         ],
         "short": {"ky": "«ХХ кылымдын Гомери»", "ru": "«Гомер ХХ века»"},
+        "photos": [
+            ("sayakbay-1930s.jpg", {"ky": "Акын Тоголок Молдо (ортодо) жана Саякбай Каралаев (оңдо), 1930-жылдар",
+                                    "ru": "Акын Тоголок Молдо (в центре) и Саякбай Каралаев (справа), 1930-е годы"}),
+            ("sayakbay-aitmatov-2.jpg", {"ky": "Саякбай Каралаев жана Чыңгыз Айтматов, 1968-жыл",
+                                         "ru": "Саякбай Каралаев и Чингиз Айтматов, 1968 год"}),
+            ("sayakbay-aitmatov-1.jpg", {"ky": "Саякбай Каралаев жана Чыңгыз Айтматов, 1968-жыл",
+                                         "ru": "Саякбай Каралаев и Чингиз Айтматов, 1968 год"}),
+        ],
+        "photo_credit": PD,
+        "videos": [
+            ("lB-kgqYR6os", {"ky": "«Манас» эпосунан үзүндү — 1965-жылкы тасма", "ru": "Отрывок из эпоса «Манас» — съёмка 1965 года"}),
+            ("OGsiSeG0F5g", {"ky": "Манастын Каныкейге үйлөнүшү — УТРК «Алтын казына», 1960-жылкы жазуу",
+                             "ru": "Женитьба Манаса на Каныкей — УТРК «Алтын казына», запись 1960 года"}),
+            ("-PjP9NNLHBQ", {"ky": "Каныкейдин Тайторуну чабышы", "ru": "Скачка Каныкей на Тайтору"}),
+        ],
         "src": "https://ky.wikipedia.org/wiki/Саякбай_Каралаев",
     },
     {
@@ -118,6 +134,12 @@ MANAS = [
             ("1925", {"ky": "Туулган айылында дүйнөдөн кайткан", "ru": "Скончался в родном селе"}),
         ],
         "short": {"ky": "Саякбайдын устаты", "ru": "Учитель Саякбая"},
+        "photos": [],
+        "videos": [
+            ("-PjP9NNLHBQ", {"ky": "Каныкейдин Тайторуну чабышы — Чоюкенин атагын чыгарган бул бөлүмдү Саякбай устатынан үйрөнгөн. Саякбай Каралаевдин айтуусунда",
+                             "ru": "Скачка Каныкей на Тайтору — этот эпизод, прославивший Чоюке, Саякбай перенял у учителя. Исполняет Саякбай Каралаев"}),
+            ("ZTrqZT3haks", {"ky": "Залкар кыргыз манасчылар", "ru": "Великие кыргызские манасчы"}),
+        ],
         "src": "https://ky.wikipedia.org/wiki/Чоюке_Өмүр_уулу",
     },
     {
@@ -164,6 +186,14 @@ MANAS = [
             ("1971", {"ky": "«Сейтектен» 3 842 сап жазылып алынган", "ru": "Записаны 3 842 строки «Сейтека»"}),
         ],
         "short": {"ky": "Чоюкенин жээни", "ru": "Племянник Чоюке"},
+        "photos": [],
+        "videos": [
+            ("qgQe1RJMJHs", {"ky": "Чубак менен Алмамбеттин жол талашканы — «Манас Академия»",
+                             "ru": "Спор Чубака и Алмамбета о дороге — «Манас Академия»"}),
+            ("rVh2UAk--ew", {"ky": "Айчүрөктүн Ак шумкарды чапканы — «Манас Академия»",
+                             "ru": "Как Айчурек похитила Белого сокола — «Манас Академия»"}),
+            ("XL3HoIrJD74", {"ky": "Сейтектин төрөлүшү — «Манас Академия»", "ru": "Рождение Сейтека — «Манас Академия»"}),
+        ],
         "src": "https://ky.wikipedia.org/wiki/Шаабай_Азиз_уулу",
     },
 ]
@@ -242,6 +272,26 @@ def page(m):
         if i == 0 and m["quote"]:
             q, who = m["quote"]
             secs.append(f"<blockquote>{t(q)}<cite>{t(who)}</cite></blockquote>")
+    media = ""
+    if m.get("photos"):
+        figs = "\n    ".join(
+            f'<figure><img src="{base}img/{f}" alt="{escape(c["ky"])}" loading="lazy"><figcaption>{t(c)}</figcaption></figure>'
+            for f, c in m["photos"])
+        media += f"""<h2>{t({"ky": "Сүрөттөр", "ru": "Фотографии"})}</h2>
+  <div class="gallery">
+    {figs}
+  </div>
+  <p class="credit">{t(m.get("photo_credit", PD))}</p>"""
+    if m.get("videos"):
+        vids = "\n    ".join(
+            f'<figure><button type="button" class="yt" data-id="{v}" aria-label="{escape(c["ky"])}">'
+            f'<img src="https://i.ytimg.com/vi/{v}/hqdefault.jpg" alt="" loading="lazy"><span class="play"></span></button>'
+            f'<figcaption>{t(c)}</figcaption></figure>'
+            for v, c in m["videos"])
+        media += f"""<h2>{t({"ky": "Видео", "ru": "Видео"})}</h2>
+  <div class="videos">
+    {vids}
+  </div>"""
     tl = "\n    ".join(f"<li><b>{y}</b> — {t(d)}</li>" for y, d in m["timeline"])
     others = [o for o in MANAS if o is not m]
     html = head(title, base, f"{m['name']['ru']} — манасчы. Сквер манасчы, Каракол.") + f"""
@@ -262,6 +312,7 @@ def page(m):
   <ul class="timeline">
     {tl}
   </ul>
+  {media}
   <h2>{t({"ky": "Сквердеги башка манасчылар", "ru": "Другие манасчы в сквере"})}</h2>
   {cards(others, base)}
   <p class="src">{t({"ky": "Булак:", "ru": "Источник:"})} <a href="{m['src']}" rel="noopener">Википедия</a></p>
